@@ -1,0 +1,6 @@
+{
+  "name": "Truy Tìm Kho Báu – Bé Đoán Hình Bí Ẩn",
+  "description": "Ứng dụng web tương tác mầm non với kính lúp khám phá hình ảnh bí ẩn, âm thanh tiếng Việt và công cụ tạo bài giảng cho giáo viên.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

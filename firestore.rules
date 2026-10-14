@@ -1,0 +1,73 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    // Connection testing doc
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Teacher user profiles
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow create: if isOwner(userId) &&
+        isValidId(userId) &&
+        incoming().uid == request.auth.uid &&
+        incoming().email is string &&
+        incoming().email.size() <= 256;
+      allow update: if isOwner(userId) &&
+        incoming().uid == existing().uid;
+    }
+
+    // Themes collection (lessons for face discovery)
+    match /themes/{themeId} {
+      // Anyone can read lessons/themes to play the preschool game
+      allow get: if isValidId(themeId);
+      allow list: if true;
+
+      // Only signed-in teachers can create and manage their own themes
+      allow create: if isSignedIn() &&
+        isValidId(themeId) &&
+        incoming().authorId == request.auth.uid &&
+        incoming().id == themeId &&
+        incoming().title is string &&
+        incoming().title.size() <= 100;
+
+      allow update: if isSignedIn() &&
+        isValidId(themeId) &&
+        existing().authorId == request.auth.uid &&
+        incoming().authorId == existing().authorId &&
+        incoming().id == existing().id &&
+        incoming().title is string &&
+        incoming().title.size() <= 100;
+
+      allow delete: if isSignedIn() &&
+        isValidId(themeId) &&
+        existing().authorId == request.auth.uid;
+    }
+  }
+}

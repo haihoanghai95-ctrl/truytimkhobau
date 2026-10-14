@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "Theme": {
+      "title": "Theme",
+      "description": "Preschool Face Discovery Lesson Theme created or saved by teachers",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "title": { "type": "string", "maxLength": 100 },
+        "category": { "type": "string", "maxLength": 100 },
+        "icon": { "type": "string", "maxLength": 10 },
+        "description": { "type": "string", "maxLength": 500 },
+        "faceImageUrl": { "type": "string", "maxLength": 2000000 },
+        "fullFaceDescription": { "type": "string", "maxLength": 500 },
+        "isCustom": { "type": "boolean" },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["id", "title", "authorId"]
+    },
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Teacher user profile",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "photoURL": { "type": "string", "maxLength": 1000 },
+        "role": { "type": "string", "enum": ["teacher", "admin"] }
+      },
+      "required": ["uid", "email"]
+    }
+  },
+  "firestore": {
+    "/themes/{themeId}": {
+      "schema": "Theme",
+      "description": "Collection of face discovery themes"
+    },
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Teacher user profile collection"
+    }
+  }
+}

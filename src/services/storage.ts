@@ -1,5 +1,6 @@
 import { FaceTheme, FacePart, TargetRegion, AppSettings } from '../types';
 import { INITIAL_FACE_THEMES, STANDARD_FACE_PARTS } from './sampleData';
+import { BUILTIN_VIETNAMESE_AUDIO } from './builtInAudios';
 import { saveThemeToFirestore, deleteThemeFromFirestore, fetchThemesFromFirestore, auth } from './firebase';
 
 const DB_NAME = 'FaceDiscoveryPreschoolDB';
@@ -90,8 +91,8 @@ export function normalizeTheme(theme: FaceTheme): FaceTheme {
     name: 'Đôi mắt',
     spokenName: 'Đôi mắt',
     description: 'Đôi mắt! Đôi mắt tròn xoe, sáng long lanh giúp bé nhìn thấy cô giáo, cha mẹ và đồ chơi đáng yêu.',
-    audioMode: eyeAudioMode,
-    audioUrl: eyeAudioUrl,
+    audioMode: 'upload_first',
+    audioUrl: eyeAudioUrl || BUILTIN_VIETNAMESE_AUDIO['eyes'],
     hint: 'Dùng để chớp chớp, mở to nhìn thấy mọi vật xung quanh bé.',
     regions: finalEyeRegions
   };
@@ -99,12 +100,10 @@ export function normalizeTheme(theme: FaceTheme): FaceTheme {
   // 3. Consolidate EARS into a SINGLE 'ears' part with 2 regions
   const earRegions: TargetRegion[] = [];
   let earAudioUrl: string | undefined = undefined;
-  let earAudioMode: 'upload_first' | 'tts_only' = 'tts_only';
 
   for (const er of earParts) {
     if (er.audioUrl) {
       earAudioUrl = er.audioUrl;
-      earAudioMode = er.audioMode;
     }
     if (Array.isArray(er.regions)) {
       for (const r of er.regions) {
@@ -133,8 +132,8 @@ export function normalizeTheme(theme: FaceTheme): FaceTheme {
     name: 'Đôi tai',
     spokenName: 'Đôi tai',
     description: 'Đôi tai! Bé có đôi tai xinh ở hai bên khuôn mặt để lắng nghe tiếng chim hót và lời cô dạy bảo.',
-    audioMode: earAudioMode,
-    audioUrl: earAudioUrl,
+    audioMode: 'upload_first',
+    audioUrl: earAudioUrl || BUILTIN_VIETNAMESE_AUDIO['ears'],
     hint: 'Bộ phận ở hai bên cạnh khuôn mặt, dùng để lắng nghe âm thanh.',
     regions: finalEarRegions
   };
@@ -157,8 +156,8 @@ export function normalizeTheme(theme: FaceTheme): FaceTheme {
     name: 'Cái mũi',
     spokenName: 'Cái mũi',
     description: nosePart?.description || 'Cái mũi! Chiếc mũi xinh xắn ở chính giữa khuôn mặt, giúp bé hít thở và ngửi mùi hương thơm.',
-    audioMode: nosePart?.audioMode || 'tts_only',
-    audioUrl: nosePart?.audioUrl,
+    audioMode: 'upload_first',
+    audioUrl: nosePart?.audioUrl || BUILTIN_VIETNAMESE_AUDIO['nose'],
     hint: nosePart?.hint || 'Bộ phận nhỏ xinh ở ngay giữa khuôn mặt, dùng để hít thở và ngửi mùi thơm.',
     regions: noseRegions.length > 0 ? [noseRegions[0]] : [{ x: 350, y: 325, radius: 55 }]
   };
@@ -181,8 +180,8 @@ export function normalizeTheme(theme: FaceTheme): FaceTheme {
     name: 'Cái miệng',
     spokenName: 'Cái miệng',
     description: mouthPart?.description || 'Cái miệng! Miệng xinh nở nụ cười thật tươi, biết hát những bài ca vui vẻ và ăn cơm thật ngoan.',
-    audioMode: mouthPart?.audioMode || 'tts_only',
-    audioUrl: mouthPart?.audioUrl,
+    audioMode: 'upload_first',
+    audioUrl: mouthPart?.audioUrl || BUILTIN_VIETNAMESE_AUDIO['mouth'],
     hint: mouthPart?.hint || 'Bộ phận nở nụ cười thật tươi, biết nói lời chào cô và ăn cơm ngoan.',
     regions: mouthRegions.length > 0 ? [mouthRegions[0]] : [{ x: 350, y: 405, radius: 68 }]
   };

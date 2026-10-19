@@ -1,4 +1,5 @@
 import { FaceTheme, FacePart } from '../types';
+import { BUILTIN_VIETNAMESE_AUDIO } from './builtInAudios';
 
 export function createSvgDataUrl(svgString: string): string {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svgString)}`;
@@ -191,7 +192,8 @@ export const STANDARD_FACE_PARTS: FacePart[] = [
     name: 'Đôi mắt',
     spokenName: 'Đôi mắt',
     description: 'Đôi mắt! Đôi mắt tròn xoe, sáng long lanh giúp bé nhìn thấy cô giáo, cha mẹ và đồ chơi đáng yêu.',
-    audioMode: 'tts_only',
+    audioMode: 'upload_first',
+    audioUrl: BUILTIN_VIETNAMESE_AUDIO['eyes'],
     hint: 'Dùng để chớp chớp, mở to nhìn thấy mọi vật xung quanh bé.',
     regions: [
       { x: 290, y: 250, radius: 55 }, // Eye 1 (left)
@@ -203,7 +205,8 @@ export const STANDARD_FACE_PARTS: FacePart[] = [
     name: 'Cái mũi',
     spokenName: 'Cái mũi',
     description: 'Cái mũi! Chiếc mũi xinh xắn ở chính giữa khuôn mặt, giúp bé hít thở và ngửi mùi hương thơm.',
-    audioMode: 'tts_only',
+    audioMode: 'upload_first',
+    audioUrl: BUILTIN_VIETNAMESE_AUDIO['nose'],
     hint: 'Bộ phận nhỏ xinh ở ngay giữa khuôn mặt, dùng để hít thở và ngửi mùi thơm.',
     regions: [
       { x: 350, y: 325, radius: 55 }
@@ -214,7 +217,8 @@ export const STANDARD_FACE_PARTS: FacePart[] = [
     name: 'Cái miệng',
     spokenName: 'Cái miệng',
     description: 'Cái miệng! Miệng xinh nở nụ cười thật tươi, biết hát những bài ca vui vẻ và ăn cơm thật ngoan.',
-    audioMode: 'tts_only',
+    audioMode: 'upload_first',
+    audioUrl: BUILTIN_VIETNAMESE_AUDIO['mouth'],
     hint: 'Bộ phận nở nụ cười thật tươi, biết nói lời chào cô và ăn cơm ngoan.',
     regions: [
       { x: 350, y: 405, radius: 68 }
@@ -225,7 +229,8 @@ export const STANDARD_FACE_PARTS: FacePart[] = [
     name: 'Đôi tai',
     spokenName: 'Đôi tai',
     description: 'Đôi tai! Bé có đôi tai xinh ở hai bên khuôn mặt để lắng nghe tiếng chim hót và lời cô dạy bảo.',
-    audioMode: 'tts_only',
+    audioMode: 'upload_first',
+    audioUrl: BUILTIN_VIETNAMESE_AUDIO['ears'],
     hint: 'Bộ phận ở hai bên cạnh khuôn mặt, dùng để lắng nghe âm thanh.',
     regions: [
       { x: 180, y: 280, radius: 58 }, // Ear 1 (left)

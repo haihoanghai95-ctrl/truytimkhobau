@@ -183,9 +183,10 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   const playPartAudio = useCallback((part: FacePart) => {
     setIsPlayingAudio(true);
     setVoiceNotice(null);
+    speechService.unlock();
 
-    // Mode 1: Custom audio file or voice recording
-    if (part.audioUrl && part.audioMode === 'upload_first') {
+    // Mode 1: Custom audio file, voice recording, or built-in audio
+    if (part.audioUrl) {
       speechService
         .playAudioUrl(
           part.audioUrl,
@@ -196,7 +197,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       return;
     }
 
-    // Mode 2: TTS
+    // Mode 2: Play part via TTS / built-in audio matching
     playPartTTS(part);
   }, [ttsRate]);
 
@@ -222,9 +223,6 @@ export const GameScreen: React.FC<GameScreenProps> = ({
       () => setIsPlayingAudio(false),
       () => {
         setIsPlayingAudio(false);
-        setVoiceNotice(
-          'Thiết bị chưa có giọng đọc tiếng Việt (vi-VN). Cô có thể dùng tính năng "Ghi âm trực tiếp bằng micro" trong Kho chủ đề để thu âm giọng cô!'
-        );
       }
     );
     if (!success) setIsPlayingAudio(false);
@@ -233,6 +231,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   // Audio Playback for full face / completed celebration
   const playFullFaceAudio = () => {
     setIsPlayingAudio(true);
+    speechService.unlock();
     const text = theme.fullFaceDescription || 'Các bé giỏi quá! Đây là khuôn mặt đáng yêu của bé. Trên khuôn mặt có đôi mắt, cái mũi, cái miệng và đôi tai!';
     const success = speechService.speakVietnamese(
       text,
@@ -259,6 +258,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   // Button 2: "HIỆN ĐÁP ÁN" (Chỉ xác định và công bố bộ phận kính lúp đang soi thực tế!)
   const handleRevealAnswer = () => {
     soundEffects.playPop();
+    speechService.unlock();
     setOutOfBoundsNotice(null);
 
     // 1. Detect which facial part is being inspected by the magnifying glass
@@ -348,6 +348,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   // Button 6: "NGHE LẠI"
   const handleReplayAudio = () => {
     soundEffects.playPop();
+    speechService.unlock();
     if (isFullRevealed) {
       playFullFaceAudio();
     } else if (highlightedPart) {
@@ -360,6 +361,7 @@ export const GameScreen: React.FC<GameScreenProps> = ({
   // Button 7: "HIỆN TOÀN BỘ"
   const handleRevealFullFace = () => {
     soundEffects.playRevealFanfare();
+    speechService.unlock();
     fireCelebrationConfetti();
     setHighlightedPart(null);
     setIsFullRevealed(true);

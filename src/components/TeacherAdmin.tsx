@@ -343,7 +343,8 @@ export const TeacherAdmin: React.FC<TeacherAdminProps> = ({
 
   // Audio test
   const handleTestPartAudio = (part: FacePart) => {
-    if (part.audioUrl && part.audioMode === 'upload_first') {
+    speechService.unlock();
+    if (part.audioUrl) {
       speechService.playAudioUrl(part.audioUrl);
     } else {
       speechService.speakVietnamese(part.spokenName || part.name, 0.9);
